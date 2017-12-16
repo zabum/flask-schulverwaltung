@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>REQUEST</th>
+            <th>URL</th>
+            <th>BESCHREIBUNG</th>
+            <th>PARAMETER</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td>/api/schueler</td>
+                <td>Zeigt alle Schüler an</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/api/schueler/{id}</td>
+                <td>Zeigt alle Schüler an</td>
+                <td>{id}=Schüler-ID</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>/api/schueler/{id}</td>
+                <td>Löscht einzelnen Schüler</td>
+                <td>{id}=Schüler-ID</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

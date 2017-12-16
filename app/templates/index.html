@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+    <form action="{{ url_for("anmelden") }}" method="POST" id="anmelden">
+        <h4>Schüler anmelden</h4>
+        <input class="form-control" name="vorname" placeholder="Vorname" required><br>
+        <input class="form-control" name="nachname" placeholder="Nachname" required><br>
+        <input class="form-control" name="beruf" placeholder="Beruf"><br>
+        <input class="form-control" name="firma" placeholder="Firma"><br>
+        <input class="form-control" name="ausbilder" placeholder="Ausbilder"><br>
+        <button class="btn btn-primary">anmelden</button>
+    </form>
+    <form action="{{ url_for("loeschen") }}" method="POST" id="loeschen">
+        <h4>Schüler löschen</h4>
+        <label>SchülerID</label>
+        <input class="form-control" name="id" placeholder="z.B. 12345" required pattern="\d+"><br>
+        <button class="btn btn-danger">löschen</button>
+    </form>
+{% endblock %}

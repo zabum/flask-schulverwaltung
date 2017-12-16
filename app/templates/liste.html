@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Vorname</th>
+                <th>Nachname</th>
+                <th>Beruf</th>
+                <th>Firma</th>
+                <th>Ausbilder</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for schueler in data %}
+            <tr>
+                <td>{{ schueler.id }}</td>
+                <td>{{ schueler.vorname }}</td>
+                <td>{{ schueler.nachname }}</td>
+                <td>{{ schueler.beruf }}</td>
+                <td>{{ schueler.firma }}</td>
+                <td>{{ schueler.ausbilder }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
