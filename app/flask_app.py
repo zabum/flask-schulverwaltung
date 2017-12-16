@@ -5,11 +5,11 @@ import json
 
 
 app = Flask(__name__)
-app.secret_key = "schlüsselundso"
+app.secret_key = "ij298hw9iofgj3ugdf"
 config = configparser.ConfigParser()
 config.read("my.ini")
 info = config["STUFF"]
-app.config["SQLALCHEMY_ECHO"]=True
+app.config["SQLALCHEMY_ECHO"]=False
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 app.config["SQLALCHEMY_DATABASE_URI"]="mysql://{}:{}@{}/{}".format(
     info["user"],
@@ -121,7 +121,6 @@ def delete_schueler(id):
     schueler = Schueler.query.get_or_404(id)
     db.session.delete(schueler)
     db.session.commit()
-
 
 if __name__ == '__main__':
     app.run()
