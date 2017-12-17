@@ -8,7 +8,6 @@ app = Flask(__name__)
 app.config.from_pyfile("config.cfg")
 db = SQLAlchemy(app)
 
-
 class Schueler(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     vorname = db.Column(db.String(80))
@@ -43,6 +42,7 @@ class Schueler(db.Model):
 @app.route("/index")
 @app.route("/")
 def index():
+    db.create_all() 
     return render_template("index.html")
 
 
