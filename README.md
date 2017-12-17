@@ -11,15 +11,15 @@ Flask-App zum Anmelden von Schülern (https://zabum.pythonanywhere.com)
 
 - MySQL-Server installieren, Benutzername und Passwort aufschreiben (brauchen wir später)
 - Terminal in ```C:\Program Files\MySQL\MySQL Server 5.7\bin``` öffnen
-- Folgenden Befehl (ohne Klammern) eingeben ```mysql - u [Benutzername] -p```
-- Passwort eingeben
+- Folgenden Befehl (ohne Klammern) eingeben ```mysql -u [Benutzername] -p```
+- Passwort eingeben, wenn danach gefagt wird
 - Datenbank erstellen ```CREATE DATABASE schule;``` die Tabellen werden später automatisch angelegt
 
 ## Setup
 
 1. Repository runterladen oder klonen ```git clone https://github.com/zabum/flask-schulverwaltung.git```
 
-2. Die config-Datei im app-Verzeichnis im Texteditor öffnen, die Datenbank-Infos (ohne Klammern) eingeben und speichern
+2. "config.cfg" aus dem "app"-Verzeichnis mit einem Texteditor öffnen, die Datenbank-Infos (ohne Klammern) eingeben und speichern
 ```SQLALCHEMY_DATABASE_URI="mysql://[Benutzername]:[Passwort]@localhost/schule"```
 
 3. Terminal in ```flask-schulverwaltung``` öffnen und Pakete installieren ```pip install -r requirements.txt```
