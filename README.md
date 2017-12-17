@@ -1,4 +1,4 @@
-## flask-schulverwaltung
+## Flask-Schulverwaltung
 
 Flask-App zum Anmelden von Schülern (https://zabum.pythonanywhere.com)
 
@@ -11,17 +11,18 @@ Flask-App zum Anmelden von Schülern (https://zabum.pythonanywhere.com)
 
 - MySQL-Server installieren
 - Terminal in ```C:\Program Files\MySQL\MySQL Server 5.7\bin``` öffnen
-- Folgenden Befehl eingeben ```mysql - u [Benutzername] -p```, falls bei der Installation ein Passwort eigegeben wurde 
+- Folgenden Befehl eingeben ```mysql - u [Benutzername] -p```
+- Falls bei der Installation ein Passwort eingegeben wurde, wird es hier abgefragt
 - Datenbank erstellen ```CREATE DATABASE [Datenbankname];``` die Tabellen werden später automatisch angelegt
 
 ## Setup
 
-- Repository runterladen oder klonen ```git clone https://github.com/zabum/flask-schulverwaltung.git```
-- Terminal in ```flask-schulverwaltung``` öffnen und Pakete installieren ```pip install -r requirements.txt```
+1. Repository runterladen oder klonen ```git clone https://github.com/zabum/flask-schulverwaltung.git```
+2. Terminal in ```flask-schulverwaltung``` öffnen und Pakete installieren ```pip install -r requirements.txt```
 
-- Terminal sagen welche Datei ausgeführt werden soll:
+3. Terminal sagen welche Datei ausgeführt werden soll:
 - cmd:```set FLASK_APP=app\flask_app.py```
 - powershell:```$env:FLASK_APP="app\flask_app.py"```
 
-- App starten ```flask run```
-- http://127.0.0.1:5000  im Browser öffnen
+4. App starten ```flask run```
+5. http://127.0.0.1:5000  im Browser öffnen
