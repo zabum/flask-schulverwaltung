@@ -11,8 +11,7 @@ Flask-App zum Anmelden von Schülern (https://zabum.pythonanywhere.com)
 
 - MySQL-Server installieren, Benutzername und Passwort aufschreiben (brauchen wir später)
 - Terminal in ```C:\Program Files\MySQL\MySQL Server 5.7\bin``` öffnen
-- Folgenden Befehl (ohne Klammern) eingeben ```mysql -u [Benutzername] -p```
-- Passwort eingeben, wenn danach gefagt wird
+- Folgenden Befehl (ohne Klammern) eingeben ```mysql -u [Benutzername] -p [Passwort]```
 - Datenbank erstellen ```CREATE DATABASE schule;``` die Tabellen werden später automatisch angelegt
 
 ## Setup
