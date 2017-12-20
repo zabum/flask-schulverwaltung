@@ -12,7 +12,7 @@ class Schueler(db.Model):
     vorname = db.Column(db.String(80))
     nachname = db.Column(db.String(80))
     beruf = db.Column(db.String(80))
-    firma = db.Column(db.String(80))
+    firma = db.Column(db.String(80), )
     ausbilder = db.Column(db.String(80))
 
     def schueler_from_request(request):
@@ -37,6 +37,20 @@ class Schueler(db.Model):
     def __repr__(self):
         return "<Schüler %r %r>" % (self.vorname, self.nachname)
 
+class Klasse(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    lehrer = db.Column(db.String(80))
+
+class Firma(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+ 
+class Ausbilder(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    vorname = db.Column(db.String(80))
+    name = db.Column(db.String(80))
+    
 
 @app.route("/index")
 @app.route("/")
