@@ -1,6 +1,5 @@
 from flask import Flask, render_template, flash, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
-import configparser
 import json
 
 
