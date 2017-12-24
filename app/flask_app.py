@@ -7,21 +7,55 @@ app = Flask(__name__)
 app.config.from_pyfile("config.cfg")
 db = SQLAlchemy(app)
 
+class Firma(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    ausbilder = db.relationship("Ausbilder", backref="firma", lazy=True)
+
+    def get_by_name():
+        pass
+
+    def firma_from_request(request):
+        return Firma(
+            name = request.form["firma"],
+            )
+
+class Ausbilder(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    firma_id = db.Column(db.Integer, db.ForeignKey("firma.id"))
+    schueler = db.relationship("Schueler", backref="ausbilder", lazy=True)
+
+    def get_by_name():
+        pass
+
+    def ausbilder_from_request(request):
+        firma = Firma.query.filter_by(name = request.form["firma"]).first()
+        return Ausbilder(
+            name = request.form["ausbilder"],
+            firma_id = firma.id
+            )
+
+class Klasse(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    lehrer = db.Column(db.String(80))
+    schueler = db.relationship("Schueler", backref="klasse", lazy=True)
+
 class Schueler(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     vorname = db.Column(db.String(80))
     nachname = db.Column(db.String(80))
-    beruf = db.Column(db.String(80))
-    firma = db.Column(db.String(80), )
-    ausbilder = db.Column(db.String(80))
+    ausbilder_id = db.Column(db.Integer, db.ForeignKey("ausbilder.id"))
+    klasse_id = db.Column(db.Integer, db.ForeignKey("klasse.id"))
 
     def schueler_from_request(request):
+        ausbilder = Ausbilder.query.filter_by(name=request.form["ausbilder"]).first()
         return Schueler(
         vorname=request.form["vorname"],
         nachname=request.form["nachname"],
-        beruf=request.form["beruf"],
-        firma=request.form["firma"],
-        ausbilder=request.form["ausbilder"],
+        ausbilder_id=ausbilder.id,
+        klasse_id=request.form["klasse_id"],
         )
 
     def to_json(self):
@@ -29,33 +63,18 @@ class Schueler(db.Model):
     "id":self.id,
     "vorname":self.vorname,
     "nachname":self.nachname,
-    "beruf":self.beruf,
-    "firma":self.firma,
-    "ausbilder":self.ausbilder,
+    "ausbilder_id":self.ausbilder_id,
+    "klasse_id":self.klasse_id,
     }
 
     def __repr__(self):
         return "<Schüler %r %r>" % (self.vorname, self.nachname)
 
-class Klasse(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
-    lehrer = db.Column(db.String(80))
-
-class Firma(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
- 
-class Ausbilder(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    vorname = db.Column(db.String(80))
-    name = db.Column(db.String(80))
-    
 
 @app.route("/index")
 @app.route("/")
 def index():
-    db.create_all() 
+    db.create_all()
     return render_template("index.html")
 
 
@@ -87,6 +106,7 @@ def api_anzeigen():
 
 
 @app.route("/api/schueler/", methods=["GET"])
+
 def get_schueler_liste():
     if request.method == "GET":
         schueler = get_all_schueler()
@@ -114,6 +134,10 @@ def get_schueler(id):
 
 
 def add_schueler(request):
+    firma = Firma.firma_from_request(request)
+    db.session.add(firma)
+    ausbilder = Ausbilder.ausbilder_from_request(request)
+    db.session.add(ausbilder)
     schueler = Schueler.schueler_from_request(request)
     db.session.add(schueler)
     db.session.commit()
