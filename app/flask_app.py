@@ -16,7 +16,10 @@ class Firma(db.Model):
     "id":self.id,
     "name":self.name,
     }
-
+    
+    def __str__(self):
+        return self.name
+    
 class Ausbilder(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
