@@ -14,4 +14,10 @@
         <input class="form-control" name="id" placeholder="z.B. 12345" required pattern="\d+"><br>
         <button class="btn btn-danger">löschen</button>
     </form>
+    <form action="{{ url_for("klasse_hinzufuegen") }}" method="POST" id="klasse">
+        <h4>Klasse hinzufügen</h4>
+        <input class="form-control" name="name" placeholder="Klassenname" required><br>
+        <input class="form-control" name="lehrer" placeholder="Klassenlehrer" required><br>
+        <button class="btn btn-success">hinzufügen</button>
+    </form>
 {% endblock %}
