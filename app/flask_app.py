@@ -2,32 +2,51 @@ from flask import Flask, render_template, flash, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-
 app = Flask(__name__)
 app.config.from_pyfile("config.cfg")
 db = SQLAlchemy(app)
 
 class Firma(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
     ausbilder = db.relationship("Ausbilder", backref="firma", lazy=True)
+
+    def to_json(self):
+        return {
+    "id":self.id,
+    "name":self.name,
+    }
 
 class Ausbilder(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
+    name = db.Column(db.String(80), nullable=False)
     firma_id = db.Column(db.Integer, db.ForeignKey("firma.id"))
     schueler = db.relationship("Schueler", backref="ausbilder", lazy=True)
 
+    def to_json(self):
+        return {
+    "id":self.id,
+    "name":self.name,
+    "firma_id":self.firma_id,
+    }
+
 class Klasse(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
     lehrer = db.Column(db.String(80))
     schueler = db.relationship("Schueler", backref="klasse", lazy=True)
 
+    def to_json(self):
+        return {
+    "id":self.id,
+    "name":self.name,
+    "lehrer":self.lehrer,
+    }
+
 class Schueler(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    vorname = db.Column(db.String(80))
-    nachname = db.Column(db.String(80))
+    vorname = db.Column(db.String(80), nullable=False)
+    nachname = db.Column(db.String(80), nullable=False)
     ausbilder_id = db.Column(db.Integer, db.ForeignKey("ausbilder.id"))
     klasse_id = db.Column(db.Integer, db.ForeignKey("klasse.id"))
 
@@ -39,9 +58,6 @@ class Schueler(db.Model):
     "ausbilder_id":self.ausbilder_id,
     "klasse_id":self.klasse_id,
     }
-
-    def __repr__(self):
-        return "<Schüler %r %r>" % (self.vorname, self.nachname)
 
 
 @app.route("/index")
@@ -80,31 +96,51 @@ def api_anzeigen():
 
 @app.route("/api/schueler/", methods=["GET"])
 def get_schueler_liste():
-    if request.method == "GET":
-        schueler = get_all_schueler()
-        return json.dumps(schueler)
+    if request.method=="GET":
+        return json.dumps(get_schueler())
 
 
-@app.route("/api/schueler/<id>", methods=["GET", "DELETE"])
-def get_schueler_by_id(id):
-    if request.method == "GET":
-        return get_schueler(id)
-    if request.method == "DELETE":
-        return delete_schueler(id)
+@app.route("/api/ausbilder/", methods=["GET"])
+def get_ausbilder_liste():
+    if request.method=="GET":
+        return json.dumps(get_ausbilder())
 
 
-def get_all_schueler():
-    schueler = []
-    for row in Schueler.query.all():
-        schueler.append(row.to_json())
-    return schueler
+@app.route("/api/firmen/", methods=["GET"])
+def get_firmen_liste():
+    if request.method=="GET":
+        return json.dumps(get_firmen())
 
 
-def get_schueler(id):
-    schueler = Schueler.query.get_or_404(id)
-    return json.dumps(schueler.to_json())
+@app.route("/api/klassen/", methods=["GET"])
+def get_klassen_liste():
+    if request.method=="GET":
+        return json.dumps(get_klassen())
 
 
+def query_to_json(query):
+    json_query = []
+    for row in query:
+        json_query.append(row.to_json())
+    return json_query
+
+
+def get_schueler():
+    return query_to_json(Schueler.query.all())
+
+
+def get_ausbilder():
+    return query_to_json(Ausbilder.query.all())
+
+
+def get_firmen():
+    return query_to_json(Firma.query.all())
+
+
+def get_klassen():
+    return query_to_json(Klasse.query.all())
+
+ 
 def add_to_db(request):
     add_firma(request.form["firma"])
     add_ausbilder(request.form["ausbilder"],request.form["firma"])
@@ -115,16 +151,16 @@ def add_to_db(request):
 def add_firma(name):
     if Firma.query.filter_by(name=name).first():
         return
-    firma=Firma(name=name)
-    db.session.add(firma)    
+    f=Firma(name=name)
+    db.session.add(f)    
     db.session.commit()
 
 
 def add_ausbilder(name, firma):
-    firma = Firma.query.filter_by(name=firma).first()
-    if Ausbilder.query.filter_by(name=name,firma_id=firma.id).first():
+    f = Firma.query.filter_by(name=firma).first()
+    if Ausbilder.query.filter_by(name=name,firma_id=f.id).first():
         return
-    ausbilder=Ausbilder(name=name,firma_id=firma.id)
+    ausbilder=Ausbilder(name=name,firma_id=f.id)
     db.session.add(ausbilder)
     db.session.commit()
 
@@ -132,8 +168,8 @@ def add_ausbilder(name, firma):
 def add_schueler(vorname, nachname, firma, ausbilder, klasse):
     f=Firma.query.filter_by(name=firma).first()
     a=Ausbilder.query.filter_by(name=ausbilder,firma_id=f.id).first()
-    schueler=Schueler(vorname=vorname,nachname=nachname,ausbilder_id=a.id,klasse_id=klasse)
-    db.session.add(schueler)
+    s=Schueler(vorname=vorname,nachname=nachname,ausbilder_id=a.id,klasse_id=klasse)
+    db.session.add(s)
     db.session.commit()
 
 
