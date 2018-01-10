@@ -29,6 +29,9 @@ class Ausbilder(db.Model):
     "name":self.name,
     "firma_id":self.firma_id,
     }
+    
+    def __str__(self):
+        return self.name
 
 class Klasse(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,6 +45,9 @@ class Klasse(db.Model):
     "name":self.name,
     "lehrer":self.lehrer,
     }
+    
+    def __str__(self):
+        return self.name
 
 class Schueler(db.Model):
     id = db.Column(db.Integer, primary_key=True)
