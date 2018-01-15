@@ -27,5 +27,9 @@ Flask-App zum Anmelden von Schülern (https://zabum.pythonanywhere.com)
 - cmd:```set FLASK_APP=app\flask_app.py```
 - powershell:```$env:FLASK_APP="app\flask_app.py"```
 
+[Nur für Entwicklung]
+4b. Debugmodus aktivieren:
+- cmd:```set FLASK_DEBUG=1```
+
 5. App starten ```flask run```
 6. http://127.0.0.1:5000  im Browser öffnen
