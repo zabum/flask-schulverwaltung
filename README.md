@@ -23,11 +23,15 @@ Flask-App zum Anmelden von Schülern (https://zabum.pythonanywhere.com)
 
 3. Terminal in ```flask-schulverwaltung``` öffnen und Pakete installieren ```pip install -r requirements.txt```
 
+Falls es Fehler geben sollte, Pakete über folgende Befehle nachinstallieren
+```pip install [Paketname]```
+oder
+```easy_install [Paketname]``` 
+
 4. Terminal sagen welche Datei ausgeführt werden soll:
 - cmd:```set FLASK_APP=app\flask_app.py```
 - powershell:```$env:FLASK_APP="app\flask_app.py"```
 
-[Nur für Entwicklung]
 4b. Debugmodus aktivieren:
 - cmd:```set FLASK_DEBUG=1```
 
