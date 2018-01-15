@@ -92,10 +92,24 @@ def loeschen():
     return redirect(url_for("index"))
 
 
+@app.route("/fuegeklassehinzu", methods=["POST"])
+def klasse_hinzufuegen():
+    if request.method == "POST":
+        add_klasse(request.form["name"], request.form["lehrer"])
+        flash("Klasse hinzugefügt")
+    return redirect(url_for("index"))
+
+
 @app.route("/schueler", methods=["GET"])
 def schueler_anzeigen():
     data = Schueler.query.all()
-    return render_template("liste.html", data=data)
+    return render_template("schueler.html", data=data)
+
+
+@app.route("/klassen", methods=["GET"])
+def klassen_anzeigen():
+	data = Klasse.query.all()
+	return render_template("klassen.html", data=data)
 
 
 @app.route("/api")
@@ -187,6 +201,13 @@ def delete_schueler(id):
     db.session.delete(schueler)
     db.session.commit()
 
+
+def add_klasse(name, lehrer):
+    if Klasse.query.filter_by(name=name).first():
+        return
+    k = Klasse(name=name, lehrer=lehrer)
+    db.session.add(k)
+    db.session.commit()
 
 if __name__ == '__main__':
     app.run()

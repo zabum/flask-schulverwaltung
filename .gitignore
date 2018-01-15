@@ -59,3 +59,4 @@ venv.bak/
 
 # VSCode
 .vscode/
+app/local.cfg
