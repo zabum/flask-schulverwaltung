@@ -1,6 +1,7 @@
 from flask import Flask, render_template, flash, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 import json
+import random
 
 app = Flask(__name__)
 app.config.from_pyfile("config.cfg")
@@ -167,7 +168,8 @@ def get_klassen():
 def add_to_db(request):
     add_firma(request.form["firma"])
     add_ausbilder(request.form["ausbilder"],request.form["firma"])
-    add_schueler(request.form["vorname"],request.form["nachname"],request.form["firma"],request.form["ausbilder"],1)
+    k = random.randrange(1, len(Klasse.query.all()), 1)
+    add_schueler(request.form["vorname"],request.form["nachname"],request.form["firma"],request.form["ausbilder"],k)
     db.session.commit()
 
 
