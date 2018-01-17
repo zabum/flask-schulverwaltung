@@ -10,6 +10,7 @@ db = SQLAlchemy(app)
 class Firma(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
+	schueler = db.relationship("Schueler", backref="firma", lazy=True)
     ausbilder = db.relationship("Ausbilder", backref="firma", lazy=True)
 
     def to_json(self):
@@ -57,6 +58,7 @@ class Schueler(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     vorname = db.Column(db.String(80), nullable=False)
     nachname = db.Column(db.String(80), nullable=False)
+	firma_id = db.Column(db.Integer, db.ForeignKey("firma.id"))
     ausbilder_id = db.Column(db.Integer, db.ForeignKey("ausbilder.id"))
     klasse_id = db.Column(db.Integer, db.ForeignKey("klasse.id"))
 
@@ -65,6 +67,7 @@ class Schueler(db.Model):
     "id":self.id,
     "vorname":self.vorname,
     "nachname":self.nachname,
+	"firma_id":self.firma_id,
     "ausbilder_id":self.ausbilder_id,
     "klasse_id":self.klasse_id,
     }
